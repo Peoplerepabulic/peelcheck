@@ -1,0 +1,10 @@
+streamlit>=1.38
+pillow>=10.0
+numpy>=1.26
+onnxruntime>=1.19
+# Training only (Colab):
+# torch>=2.4
+# torchvision
+# scikit-learn
+# matplotlib
+# kaggle
