@@ -1,37 +1,58 @@
-# Devpost description draft (≤500 words) — fill bracketed bits after building
+# Devpost submission — PeelCheck (paste-ready, ~430 words)
 
 **Project name:** PeelCheck
-**Team:** [names + schools]
+**Team:** Qiwei Li (solo, Washington University in St. Louis)
 **Tagline:** One photo tells you if that banana is snack, bread, or bin.
+**GitHub:** https://github.com/Peoplerepabulic/peelcheck
+**Live demo:** [TBD — HF Spaces URL after deploy]
+**Video:** [TBD — YouTube, public, ≤3:00]
 
-## Inspiration (brainstorming)
-[1–2 sentences: food waste moment — e.g. dorm fridge bananas going black; wanted a
-classifier a beginner could train in a weekend that still proves a real pipeline.]
+## Inspiration
+Every dorm fridge has the same story: bananas bought green, forgotten, then
+thrown away once spots appear — not because they went bad, but because nobody
+could tell “overripe for bread” from “actually rotten.” I wanted a weekend-sized
+project that proves a full image-AI pipeline (data → training → evaluation →
+live demo) on a problem anyone can understand in five seconds.
 
 ## What it does
-Upload a banana photo → PeelCheck predicts underripe / ripe / overripe with
-confidence → returns a concrete next step (eat now / bake / freeze) so the fruit
-gets used instead of tossed.
+Upload a banana photo and PeelCheck predicts one of four stages — unripe,
+ripe, overripe, rotten — with confidence bars for all stages, plus a concrete
+next step: wait or cook it, eat it now, bake/blend/freeze it today, or don’t
+eat it raw. The goal is using fruit instead of binning it.
 
-## How we built it (design process + resources)
-- Data: [n] photos across 3 ripeness stages, collected/shot during the hackathon
-  + public ripeness images; augmented (rotation, brightness, crop).
-- Model: MobileNetV3 transfer learning, fine-tuned in Colab; evaluated with a
-  confusion matrix (per-class precision/recall in repo README).
-- App: Streamlit single-page demo, deployed on Hugging Face Spaces so judges can
-  click a live URL, not just watch a video.
-- Resources: PyTorch, Streamlit, Hugging Face Spaces, [dataset links].
+## How I built it (design + resources)
+- Data: Kaggle Banana Ripeness Classification Dataset (Apache 2.0) — 13,478
+  images (train 11,793 / valid 1,123 / test 562) in 4 ripeness classes.
+  Held-out test split was never touched during training.
+- Model (shipped today): a multinomial logistic-regression classifier trained
+  on 47 HSV color features (hue/saturation/value histograms, color-class
+  fractions, brown-spot synthesis logic in `train/augment.py` for the minority
+  class), with balanced class weights. It trains with numpy only, so anyone
+  can reproduce it offline in ~2 minutes.
+- Model (upgrade path, in repo): MobileNetV3 transfer-learning fine-tune
+  (`train/train_peelcheck.py` + Colab notebook) exporting ONNX; the demo
+  prefers ONNX > trained NPZ > labeled heuristic preview, in that order.
+- App: single-page Streamlit demo; model file is 2.5 KB, inference is instant.
+
+## Results
+Test accuracy **83.3%** (valid 81.4%). Per-class F1: unripe 0.91, ripe 0.87,
+overripe 0.82, rotten 0.75. Honest limitation: rotten recall is 0.67 — color
+alone confuses dark rotten fruit with overripe/unripe. That error analysis is
+exactly why the texture-aware fine-tune is next.
 
 ## Challenges
-[1–2 honest bullets: lighting variance, class boundary at “ripe vs overripe”.]
+Package downloads for the deep-learning stack kept timing out in my build
+environment, so I rebuilt the trainer to run on numpy alone rather than
+shipping a placeholder — a trained model with real metrics over a pretty shell.
 
 ## What's next
-More fruit classes, grocer shelf-scan mode, and a shareable “use-first” list.
+Ship the MobileNetV3 fine-tune, add more fruits, and a grocer “sort the shelf”
+batch mode.
 
 ---
-Submission checklist (do not publish this section):
-- [ ] Video ≤3:00, YouTube **public**, covers inspiration / design / resources / product
-- [ ] GitHub repo public, commits all within Oct 9–11, 2026
-- [ ] Live demo URL opens without login
-- [ ] Team members all listed on Devpost
-- [ ] No other hackathon has this project (no cross-submission)
+Submit checklist (delete before posting):
+- [ ] Video ≤3:00, YouTube Public, covers inspiration/design/resources/product
+- [ ] GitHub public, all commits Oct 9–11, 2026
+- [ ] Live demo opens without login (or video shows local run end-to-end)
+- [ ] Solo team listed correctly on Devpost
+- [ ] No cross-submission to any other hackathon
