@@ -62,6 +62,8 @@ def main():
     ap.add_argument("--epochs", type=int, default=12)
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--out", default="models")
+    ap.add_argument("--freeze-backbone", action="store_true",
+                    help="train only the classifier head (fast CPU path)")
     args = ap.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -72,6 +74,10 @@ def main():
 
     model = models.mobilenet_v3_small(weights="DEFAULT")
     model.classifier[3] = nn.Linear(model.classifier[3].in_features, len(classes))
+    if args.freeze_backbone:
+        for p in model.features.parameters():
+            p.requires_grad = False
+        print("backbone frozen — training classifier head only")
     model = model.to(device)
 
     # balanced class weights for the imbalanced 4-class set

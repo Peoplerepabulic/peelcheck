@@ -1,6 +1,6 @@
 data/
+.venv/
 models/*.pt
-models/*.onnx
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
