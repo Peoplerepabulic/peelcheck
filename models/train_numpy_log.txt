@@ -1,1 +1,53 @@
 classes: ['overripe', 'ripe', 'rotten', 'unripe']
+train: X=(11793, 47)
+valid: X=(1123, 47)
+test: X=(562, 47)
+epoch 1/60 valid_acc=0.6545
+epoch 10/60 valid_acc=0.7640
+epoch 20/60 valid_acc=0.7756
+epoch 30/60 valid_acc=0.7872
+epoch 40/60 valid_acc=0.7979
+epoch 50/60 valid_acc=0.8068
+epoch 60/60 valid_acc=0.8139
+{
+  "engine": "numpy-softmax-hsv",
+  "classes": [
+    "overripe",
+    "ripe",
+    "rotten",
+    "unripe"
+  ],
+  "test_accuracy": 0.8327402135231317,
+  "valid_accuracy": 0.8138913624220837,
+  "per_class": {
+    "overripe": {
+      "precision": 0.75,
+      "recall": 0.9026548672566371,
+      "f1-score": 0.8192771084337348,
+      "support": 113
+    },
+    "ripe": {
+      "precision": 0.88,
+      "recall": 0.8571428571428571,
+      "f1-score": 0.8684210526315789,
+      "support": 154
+    },
+    "rotten": {
+      "precision": 0.8611111111111112,
+      "recall": 0.6702702702702703,
+      "f1-score": 0.7537993920972644,
+      "support": 185
+    },
+    "unripe": {
+      "precision": 0.8333333333333334,
+      "recall": 1.0,
+      "f1-score": 0.9090909090909091,
+      "support": 110
+    }
+  }
+}
+confusion matrix (rows=true):
+ [[102   7   4   0]
+ [  6 132  16   0]
+ [ 28  11 124  22]
+ [  0   0   0 110]]

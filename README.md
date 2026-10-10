@@ -51,8 +51,18 @@ python train/train_peelcheck.py --data data/raw --epochs 12 --out models/
 ```
 Or open `train/colab_train.ipynb` in Colab (GPU runtime) and run top to bottom.
 
-## Results
-[TBD after training: test accuracy, per-class table, confusion matrix image]
+## Results (trained 2026-10-10, held-out test split)
+Trained HSV-feature softmax classifier (`train/train_numpy.py`, numpy-only so it
+runs anywhere) on the full 13,478-image dataset:
+
+- **Test accuracy: 83.3%** (valid 81.4%) on 562 held-out test images
+- Unripe: F1 0.91 (recall 1.00) · Ripe: F1 0.87 · Overripe: F1 0.82 · Rotten: F1 0.75
+- Known weakness: rotten recall 0.67 — dark rotten fruit gets confused with
+  overripe/unripe on color alone. The MobileNetV3 fine-tune
+  (`train/train_peelcheck.py` / Colab) is the upgrade path for texture.
+- Full per-class table in `models/metrics.json`, matrix in
+  `models/confusion_matrix.csv`. Demo serves this model today
+  (`models/peelcheck_npz.npz`, 2.5 KB) and prefers the ONNX fine-tune when present.
 
 ## Hackathon compliance
 - All code written during Banana Hacks 2026 (Oct 9–11, 2026). Public dataset
