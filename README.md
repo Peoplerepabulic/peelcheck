@@ -7,7 +7,7 @@ Eat now, bake it, freeze it, or compost it — no more bananas wasted because
 nobody could tell.
 
 - **Live demo:** https://peelcheck.streamlit.app/
-- **Demo video (≤3 min):** [TBD — YouTube]
+- **Demo video (≤3 min):** https://youtu.be/WN2--GUFPZQ
 - **Devpost:** [TBD]
 
 ## Why
