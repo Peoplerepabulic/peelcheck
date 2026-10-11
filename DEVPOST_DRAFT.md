@@ -26,9 +26,10 @@ eat it raw. The goal is using fruit instead of binning it.
   Held-out test split was never touched during training.
 - Model (shipped today): a multinomial logistic-regression classifier trained
   on 47 HSV color features (hue/saturation/value histograms, color-class
-  fractions, brown-spot synthesis logic in `train/augment.py` for the minority
-  class), with balanced class weights. It trains with numpy only, so anyone
-  can reproduce it offline in ~2 minutes.
+  fractions), with balanced class weights. It trains with numpy only, so
+  anyone can reproduce it offline in ~2 minutes. Augmentation helpers
+  (brown-spot synthesis in `train/augment.py`) were explored in-repo but not
+  used to train the shipped model.
 - Model (upgrade path, in repo): MobileNetV3 transfer-learning fine-tune
   (`train/train_peelcheck.py` + Colab notebook) exporting ONNX; the demo
   prefers ONNX > trained NPZ > labeled heuristic preview, in that order.
