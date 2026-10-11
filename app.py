@@ -165,5 +165,5 @@ else:
              "the demo runs on held-out images too.")
 
 st.divider()
-st.caption("Built during Banana Hacks 2026 · Fine-tuned MobileNetV3 on the "
+st.caption("Built during Banana Hacks 2026 · Trained classifier on the "
            "Kaggle Banana Ripeness dataset (Apache 2.0) · Solo project")
