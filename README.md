@@ -6,7 +6,7 @@ Banana Hacks 2026 · Image AI · Solo project by Qiwei Li
 Eat now, bake it, freeze it, or compost it — no more bananas wasted because
 nobody could tell.
 
-- **Live demo:** [TBD — Hugging Face Spaces URL]
+- **Live demo:** https://peelcheck.streamlit.app/
 - **Demo video (≤3 min):** [TBD — YouTube]
 - **Devpost:** [TBD]
 
@@ -17,21 +17,29 @@ actionable call, for dorm fridges, first-time cooks, and small grocers sorting
 shelves.
 
 ## Image AI (core, not a wrapper)
-- **Fine-tuned classifier** (transfer learning, MobileNetV3-Small) trained
-  during the hackathon on 13,478 banana images in 4 classes
-  (`unripe / ripe / overripe / rotten`).
-- Full pipeline in-repo: dataset prep → augmentation (color jitter +
-  synthetic brown-spot generation for the minority class) → training with
+- **Trained classifier** (multinomial logistic regression on 47 HSV color
+  features) trained during the hackathon on 11,793 banana images in 4 classes
+  (`unripe / ripe / overripe / rotten`); it trains in numpy only
+  (`train/train_numpy.py`), so anyone can reproduce it offline in ~2 minutes.
+- Full pipeline in-repo: dataset prep → feature extraction → training with
   balanced class weights → evaluation (per-class precision/recall +
-  confusion matrix) → ONNX export → live demo.
+  confusion matrix) → 2.5 KB model file → live demo.
+- Augmentation (color jitter, synthetic brown-spot generation in
+  `train/augment.py`) and a MobileNetV3-Small transfer-learning fine-tune
+  (`train/train_peelcheck.py` + Colab notebook, ONNX export) are in-repo as
+  the upgrade path — the demo serves the numpy classifier today and prefers
+  the ONNX fine-tune if present.
 - The classifier *is* the product: remove it and nothing remains.
 
 ## Dataset & resources
 - Kaggle **Banana Ripeness Classification Dataset** (S.M. Shahriar, Apache 2.0):
   13,478 images — train 11,793 / valid 1,123 / test 562, pre-resized 416×416.
   https://www.kaggle.com/datasets/shahriar26s/banana-ripeness-classification-dataset
-- Training: PyTorch + torchvision on Colab GPU (`train/colab_train.ipynb`).
-- Demo: Streamlit + ONNX Runtime, deployable to Hugging Face Spaces.
+- Training: shipped model trained in numpy on CPU (`train/train_numpy.py`,
+  ~2 minutes). MobileNetV3-Small transfer-learning fine-tune available as
+  upgrade path on Colab GPU (`train/colab_train.ipynb`).
+- Demo: Streamlit, live at https://peelcheck.streamlit.app/ — 2.5 KB model,
+  instant inference. (A Hugging Face Spaces bundle also lives in `spaces/`.)
 - Label mapping and class decisions: `train/label_map.md`.
 
 ## Run the demo locally
@@ -68,3 +76,4 @@ runs anywhere) on the full 13,478-image dataset:
 - All code written during Banana Hacks 2026 (Oct 9–11, 2026). Public dataset
   cited above; no prior project code reused; no cross-submission.
 - Project created solely for Banana Hacks 2026.
+
